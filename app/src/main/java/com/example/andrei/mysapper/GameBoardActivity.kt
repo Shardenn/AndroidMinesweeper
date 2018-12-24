@@ -9,7 +9,7 @@ class GameBoardActivity : AppCompatActivity(),
     GameView.GameViewDataSource
 {
     private lateinit var m_game_view : GameView
-    private val m_game_model = GameModel()
+    private var m_game_model = GameModel()
     override var size = m_game_model.settings.size
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +23,22 @@ class GameBoardActivity : AppCompatActivity(),
         Log.d("Sapper", "On new game tap (clicked) called in the main activity")
     }
 
-    override fun onCellTapWithId(id: Int) {
-        Log.d("Sapper", "Cell num " + id.toString() + " is clicked in main")
+    override fun onCellTapAt(point: Point) {
+        val pointStr = (point.x).toString() + " " + (point.y).toString()
+        Log.d("Sapper", "Cell at " + pointStr + " is clicked in main")
+
+        m_game_model.revealCellAt(point)
     }
 
     override fun cellTypeAtCoord(point: Point): CellType {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val cell = m_game_model.game?.field?.get(point)
+        val actualType = cell?.type
+
+        return when(actualType) {
+            Cell.Type.Bomb -> CellType.Bomb()
+            Cell.Type.Label -> CellType.Label(cell.labelValue)
+            Cell.Type.Empty -> CellType.Empty()
+            null -> CellType.Closed()
+        }
     }
 }

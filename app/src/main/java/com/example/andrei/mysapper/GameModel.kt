@@ -6,7 +6,7 @@ class GameModel {
     val DebugSetting = Settings(Size(3,3), 3)
     val Begginer = Settings(Size(9,9), 10)
 
-    private var game : Game? = null
+    var game : Game? = null
     var settings : Settings = Begginer
 
     fun revealCellAt(point: Point) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.LinearLayout
+import android.widget.TableRow
 import kotlinx.android.synthetic.main.activity_game_board.view.*
 
 sealed class CellType {
@@ -30,7 +31,7 @@ interface GameView {
     Thing to change? What if we tap on "new game?"
      */
         fun onNewGameTap()
-        fun onCellTapWithId(id: Int)
+        fun onCellTapAt(point: Point)
     }
 
     interface GameViewDataSource {
@@ -69,28 +70,30 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
         m_board_tap_listener?.onNewGameTap()
     }
 
-    fun onClickCellNum(id: Int) {
-        Log.d("Sapper", "On click cell called in the gameViewImpl")
-        m_board_tap_listener?.onCellTapWithId(id)
+    fun onClickCellAt(point: Point) {
+        m_board_tap_listener?.onCellTapAt(point)
+        val cellType = m_data_source?.cellTypeAtCoord(point)
+
+        val pointStr = (point.x).toString() + " " + (point.y).toString()
+        Log.d("SapperDebug", "View says that cell at " + pointStr + " is " + cellType.toString())
     }
 
     private fun setupView() {
         val field_size = m_data_source?.size ?: return
-        val linearLayout = m_root_view.requestLayout()
-
-        m_root_view.grid_layout_cells.columnCount = field_size.width
-
 
         for(x in 0 until field_size.width) {
+
+            var tableRow = TableRow(m_root_view.context)
+            tableRow.id = x
+
             for(y in 0 until field_size.height) {
                 val cell = Button(layoutInflater.context)
-                var id = x*field_size.width + y
+                cell.text = String.format("%dx%d", x, y)
 
-                cell.setOnClickListener {this.onClickCellNum(id)}
-                cell.text =(id).toString()
-                
-                m_root_view.grid_layout_cells.addView(cell)
+                cell.setOnClickListener {this.onClickCellAt(Point(x,y))}
+                tableRow.addView(cell)
             }
+            m_root_view.table_layout_cells.addView(tableRow)
         }
     }
 }

@@ -12,10 +12,10 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
     }
 
     private fun generateBombsLocation() : MutableList<Point> {
-        var field = this.field
+        var field = Field(size) // temporary
         field[initial_location] = null
 
-        var bombs_list = MutableList<Point>(bomb_count) { _ -> Point(-1, -1)}
+        var bombs_list = mutableListOf<Point>()
 
         for(i in 1..bomb_count) {
             bombs_list.add(field.pickRandomCell()!!.location) // TODO how !! works?

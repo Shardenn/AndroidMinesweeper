@@ -39,13 +39,13 @@ private data class Generator(val width : Int) {
         return Cell(point)
     }
 
-    fun indexForPoint(point : Point) : Int {
-        return point.y * width + point.x
+    fun indexForPoint(point : Point) : Int { // TODO make sure formula is ok
+        return point.x * width + point.y
     }
 
-    private fun pointForIndex(index : Int) : Point {
-        val x = index % width
-        val y = index / width
+    private fun pointForIndex(index : Int) : Point { // TODO make sure formula is ok
+        val y = index % width
+        val x = index / width
 
         return Point(x,y)
     }
