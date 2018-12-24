@@ -25,20 +25,21 @@ class GameBoardActivity : AppCompatActivity(),
 
     override fun onCellTapAt(point: Point) {
         val pointStr = (point.x).toString() + " " + (point.y).toString()
-        Log.d("Sapper", "Cell at " + pointStr + " is clicked in main")
+        Log.d("SapperDebug", "Cell at " + pointStr + " is clicked in main")
 
         m_game_model.revealCellAt(point)
+        m_game_view.reloadGrid()
     }
 
-    override fun cellTypeAtCoord(point: Point): CellType {
+    override fun cellTypeAtCoord(point: Point): CellType.Type {
         val cell = m_game_model.game?.field?.get(point)
         val actualType = cell?.type
 
         return when(actualType) {
-            Cell.Type.Bomb -> CellType.Bomb()
-            Cell.Type.Label -> CellType.Label(cell.labelValue)
-            Cell.Type.Empty -> CellType.Empty()
-            null -> CellType.Closed()
+            Cell.Type.Bomb -> CellType.Type.BOMB
+            Cell.Type.Label -> CellType.Type.LABEL
+            Cell.Type.Empty -> CellType.Type.EMPTY
+            null -> CellType.Type.CLOSED
         }
     }
 }

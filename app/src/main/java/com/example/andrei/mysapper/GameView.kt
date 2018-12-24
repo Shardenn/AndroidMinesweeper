@@ -1,23 +1,10 @@
 package com.example.andrei.mysapper
 
-import android.app.ActionBar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.GridLayout
-import android.widget.LinearLayout
 import android.widget.TableRow
 import kotlinx.android.synthetic.main.activity_game_board.view.*
-
-sealed class CellType {
-    class Closed : CellType()
-    class Flagged : CellType()
-    class Bomb : CellType()
-    class Empty :CellType()
-    class Label(val value : Int) : CellType()
-}
 
 interface GameView {
 
@@ -36,11 +23,12 @@ interface GameView {
 
     interface GameViewDataSource {
         var size: Size
-        fun cellTypeAtCoord(point: Point): CellType
+        fun cellTypeAtCoord(point: Point): CellType.Type
     }
 
     fun setListener(listener: GameViewListener)
     fun setDataSource(dataSource: GameViewDataSource)
+    fun reloadGrid()
 }
 
 class GameViewImpl(var layoutInflater: LayoutInflater,
@@ -49,10 +37,13 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     var m_board_tap_listener: GameView.GameViewListener? = null
     private var m_root_view = layoutInflater.inflate(R.layout.activity_game_board, null)
 
+    private var m_grid = mutableListOf<CellView>()
+
     init {
         // m_RootView.any_cell ??? .setOnClickListener(this)
         m_root_view.button_new_game.setOnClickListener {this.onClickNewGame()}
         setupView()
+        reloadGrid()
     }
 
     override fun getRootView() = m_root_view
@@ -72,10 +63,12 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
 
     fun onClickCellAt(point: Point) {
         m_board_tap_listener?.onCellTapAt(point)
-        val cellType = m_data_source?.cellTypeAtCoord(point)
+    }
 
-        val pointStr = (point.x).toString() + " " + (point.y).toString()
-        Log.d("SapperDebug", "View says that cell at " + pointStr + " is " + cellType.toString())
+    override fun reloadGrid() {
+        for(cell in m_grid) {
+            cell.setType(m_data_source?.cellTypeAtCoord(cell.point))
+        }
     }
 
     private fun setupView() {
@@ -87,8 +80,9 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
             tableRow.id = x
 
             for(y in 0 until field_size.height) {
-                val cell = Button(layoutInflater.context)
-                cell.text = String.format("%dx%d", x, y)
+                val cell = CellView(layoutInflater.context, Point(x,y))
+                m_grid.add(cell as CellView)
+                cell.setText("EMPTY")
 
                 cell.setOnClickListener {this.onClickCellAt(Point(x,y))}
                 tableRow.addView(cell)

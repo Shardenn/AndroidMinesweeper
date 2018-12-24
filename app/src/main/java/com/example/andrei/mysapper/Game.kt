@@ -2,23 +2,27 @@ package com.example.andrei.mysapper
 
 data class Game(var size: Size, var initial_location : Point, var bomb_count : Int) {
     var field = Field(size)
+    var opened_cells = mutableSetOf<Point>()
 
     init {
         putBombs()
     }
 
     fun revealCellAt(point: Point) {
-
+        opened_cells.add(point)
     }
 
     private fun generateBombsLocation() : MutableList<Point> {
-        var field = Field(size) // temporary
+        val field = Field(size) // temporary
         field[initial_location] = null
 
-        var bombs_list = mutableListOf<Point>()
+        val bombs_list = mutableListOf<Point>()
 
-        for(i in 1..bomb_count) {
-            bombs_list.add(field.pickRandomCell()!!.location) // TODO how !! works?
+        var i = 1
+        while(i <= bomb_count) {
+            val pickedCell = field.pickRandomCell() ?: continue
+            bombs_list.add(pickedCell.location)
+            i++
         }
 
         return bombs_list
