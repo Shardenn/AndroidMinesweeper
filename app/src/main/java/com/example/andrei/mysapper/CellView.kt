@@ -4,28 +4,29 @@ import android.content.Context
 import android.widget.Button
 
 class CellType {
-    enum class Type {
+    enum class Type_t {
         CLOSED,
         FLAGGED,
         BOMB,
         EMPTY,
         LABEL
     }
-    var labelValue = -1
+    var Type = Type_t.CLOSED
+    var labelValue = 0
 }
 
 class CellView(context: Context, var point: Point) : Button(context) {
-    private var cellType: CellType.Type? = CellType.Type.CLOSED
+    private var cellType: CellType.Type_t? = CellType.Type_t.CLOSED
 
-    fun setType(newType: CellType.Type?) {
-        cellType = newType
+    fun setType(newType: CellType?) {
+        cellType = newType?.Type ?: return
 
-        var newText = when (cellType) {
-            CellType.Type.CLOSED -> "CLOSED"
-            CellType.Type.FLAGGED -> "FLAG"
-            CellType.Type.BOMB -> "BOMB"
-            CellType.Type.EMPTY -> ""
-            CellType.Type.LABEL -> "LABEL"
+        val newText = when (cellType) {
+            CellType.Type_t.CLOSED -> "CLOSED"
+            CellType.Type_t.FLAGGED -> "FLAG"
+            CellType.Type_t.BOMB -> "BOMB"
+            CellType.Type_t.EMPTY -> ""
+            CellType.Type_t.LABEL -> newType.labelValue.toString()
             else -> "ERR"
         }
 

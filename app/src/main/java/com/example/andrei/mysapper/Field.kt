@@ -8,6 +8,49 @@ data class Field(var size : Size) {
         return cells.pickRandomElement()
     }
 
+    fun generateLabels() {
+        val bombs = mutableListOf<Cell>()
+        for(cell in cells) {
+            if(cell != null && cell.isBomb()) {
+                bombs.add(cell)
+            }
+        }
+
+        for(bomb in bombs) {
+            for(bomb_neighbour in getNeighbourCells(bomb)) {
+                val index = generator.indexForPoint(bomb_neighbour.location)
+                var currCell = cells[index]!!
+                if(currCell.type == Cell.Type.Bomb)
+                    continue
+
+                if(currCell.type != Cell.Type.Label) {
+                    currCell.type = Cell.Type.Label
+                    currCell.labelValue = 0
+                }
+                currCell.labelValue++
+            }
+        }
+    }
+
+    private fun getNeighbourCells(cell: Cell): MutableList<Cell> {
+        val neighbours = mutableListOf<Cell>()
+
+        for(i in -1..1) {
+            for(j in -1..1) {
+                val supposed_neighbour = Cell(
+                    Point(cell.location.x + i, cell.location.y + j))
+                if( !(0 until size.width).contains(supposed_neighbour.location.x) ||
+                    !(0 until size.height).contains(supposed_neighbour.location.y) ||
+                    supposed_neighbour.location == cell.location)
+                    continue
+
+                neighbours.add(supposed_neighbour) // TODO do we have the neighbours by reference?
+            }
+        }
+
+        return  neighbours
+    }
+
     // operator[]
     operator fun get(point: Point) : Cell? {
         if(!isAvailable(point))

@@ -6,6 +6,7 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
 
     init {
         putBombs()
+        field.generateLabels()
     }
 
     fun revealCellAt(point: Point) {

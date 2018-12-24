@@ -23,7 +23,7 @@ interface GameView {
 
     interface GameViewDataSource {
         var size: Size
-        fun cellTypeAtCoord(point: Point): CellType.Type
+        fun cellTypeAtCoord(point: Point): CellType
     }
 
     fun setListener(listener: GameViewListener)
