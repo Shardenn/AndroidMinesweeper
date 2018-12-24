@@ -3,7 +3,7 @@ package com.example.andrei.mysapper
 class GameModel {
     data class Settings(var size: Size, var bombs_count : Int) {}
 
-    val DebugSetting = Settings(Size(5,5), 19)
+    val DebugSetting = Settings(Size(5,5), 10)
     val Begginer = Settings(Size(9,9), 10)
 
     var game : Game? = null

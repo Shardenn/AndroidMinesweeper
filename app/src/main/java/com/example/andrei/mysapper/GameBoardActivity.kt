@@ -35,6 +35,10 @@ class GameBoardActivity : AppCompatActivity(),
         val cell = m_game_model.game?.field?.get(point)
         val actualType = cell?.type
 
+        var isOpened = m_game_model.game?.opened_cells?.contains(point)
+        if(isOpened == null || !isOpened)
+            return CellType.Type.CLOSED
+
         return when(actualType) {
             Cell.Type.Bomb -> CellType.Type.BOMB
             Cell.Type.Label -> CellType.Type.LABEL

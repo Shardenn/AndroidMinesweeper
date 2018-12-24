@@ -40,7 +40,6 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     private var m_grid = mutableListOf<CellView>()
 
     init {
-        // m_RootView.any_cell ??? .setOnClickListener(this)
         m_root_view.button_new_game.setOnClickListener {this.onClickNewGame()}
         setupView()
         reloadGrid()
