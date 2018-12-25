@@ -28,14 +28,21 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
     }
 
     private fun generateBombsLocation() : MutableList<Point> {
-        val field = Field(size) // temporary
-        field[initial_location] = null
+        val temp_field = this.field.copy()
+
+        val initialCell = temp_field[initial_location]
+        if(initialCell != null) {
+            for(neighbour in temp_field.getNeighbourCells(initialCell)) {
+                temp_field[neighbour.location] = null
+            }
+        }
+        temp_field[initial_location] = null
 
         val bombs_list = mutableListOf<Point>()
 
         var i = 1
         while(i <= bomb_count) {
-            val pickedCell = field.pickRandomCell() ?: continue
+            val pickedCell = temp_field.pickRandomCell() ?: continue
             bombs_list.add(pickedCell.location)
             i++
         }
