@@ -19,8 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Andrei\Pictures\SapperImages\lock.png" />
-                                      <entry key="outputName" value="image_lock" />
+                                      <entry key="imageAsset" value="C:\Users\Andrei\Pictures\SapperImages\flag.png" />
+                                      <entry key="outputName" value="image_flag" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -39,6 +39,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

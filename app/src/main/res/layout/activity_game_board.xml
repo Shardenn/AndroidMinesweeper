@@ -48,13 +48,22 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/button_new_game" android:id="@+id/table_layout_cells"
             android:background="@android:color/darker_gray" android:isScrollContainer="true"
-            android:gravity="fill" app:layout_constrainedWidth="true" app:layout_constrainedHeight="true"
+            android:gravity="fill"
             android:scrollbarStyle="insideOverlay" android:scrollbars="horizontal|vertical"
-    >
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </TableLayout>
+    <android.support.v7.widget.Toolbar
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>

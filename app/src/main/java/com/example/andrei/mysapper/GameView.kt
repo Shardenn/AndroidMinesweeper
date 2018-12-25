@@ -19,6 +19,7 @@ interface GameView {
      */
         fun onNewGameTap()
         fun onCellTapAt(point: Point)
+        fun onCellLongTapAt(point: Point)
     }
 
     interface GameViewDataSource {
@@ -64,6 +65,11 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
         m_board_tap_listener?.onCellTapAt(point)
     }
 
+    fun onLongClickCellAt(point: Point) : Boolean {
+        m_board_tap_listener?.onCellLongTapAt(point)
+        return true
+    }
+
     override fun reloadGrid() {
         for(cell in m_grid) {
             cell.setType(m_data_source?.cellTypeAtCoord(cell.point))
@@ -75,15 +81,19 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
 
         for(x in 0 until field_size.width) {
 
-            var tableRow = TableRow(m_root_view.context)
+            val tableRow = TableRow(m_root_view.context)
             tableRow.id = x
 
             for(y in 0 until field_size.height) {
                 val cell = CellView(layoutInflater.context, Point(x,y))
-                m_grid.add(cell as CellView)
-                cell.setText("EMPTY")
+                m_grid.add(cell)
+
+                val viewType = CellType()
+                viewType.Type = CellType.Type_t.CLOSED
+                cell.setType(viewType)
 
                 cell.setOnClickListener {this.onClickCellAt(Point(x,y))}
+                cell.setOnLongClickListener { this.onLongClickCellAt(Point(x, y)) }
                 tableRow.addView(cell)
             }
             m_root_view.table_layout_cells.addView(tableRow)

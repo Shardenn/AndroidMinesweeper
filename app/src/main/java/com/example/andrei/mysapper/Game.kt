@@ -3,6 +3,7 @@ package com.example.andrei.mysapper
 data class Game(var size: Size, var initial_location : Point, var bomb_count : Int) {
     var field = Field(size)
     var opened_cells = mutableSetOf<Point>()
+    var flagged_cells = mutableSetOf<Point>()
 
     init {
         putBombs()
@@ -11,6 +12,10 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
 
     fun revealCellAt(point: Point) {
         opened_cells.add(point)
+    }
+
+    fun putFlag(point: Point) {
+        flagged_cells.add(point)
     }
 
     private fun generateBombsLocation() : MutableList<Point> {

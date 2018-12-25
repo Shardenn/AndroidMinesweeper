@@ -1,9 +1,9 @@
 package com.example.andrei.mysapper
 
 class GameModel {
-    data class Settings(var size: Size, var bombs_count : Int) {}
+    data class Settings(var size: Size, var bombs_count : Int)
 
-    val DebugSetting = Settings(Size(5,5), 11)
+    val DebugSetting = Settings(Size(6,6), 9)
     val Begginer = Settings(Size(9,9), 10)
 
     var game : Game? = null
@@ -11,10 +11,16 @@ class GameModel {
 
     fun revealCellAt(point: Point) {
         if(game == null) {
+            if(settings.bombs_count >= settings.size.area())
+                settings.bombs_count = settings.size.area() - 1
             game = Game(settings.size, point, settings.bombs_count)
         }
 
         game?.revealCellAt(point) // TODO
+    }
+
+    fun putFlag(point: Point) {
+        game?.putFlag(point)
     }
 
     fun restart() {

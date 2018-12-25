@@ -20,14 +20,24 @@ class GameBoardActivity : AppCompatActivity(),
     }
 
     override fun onNewGameTap(){
-        Log.d("Sapper", "On new game tap (clicked) called in the main activity")
+        m_game_model.restart()
+        m_game_view.reloadGrid()
     }
 
     override fun onCellTapAt(point: Point) {
-        val pointStr = (point.x).toString() + " " + (point.y).toString()
-        Log.d("SapperDebug", "Cell at " + pointStr + " is clicked in main")
-
         m_game_model.revealCellAt(point)
+        m_game_view.reloadGrid()
+    }
+
+    override fun onCellLongTapAt(point: Point) {
+        if(m_game_model.game == null) {
+            onCellTapAt(point)
+            return
+        }
+        val isOpened = m_game_model.game?.opened_cells?.contains(point) ?: return
+        if(isOpened)
+            return
+        m_game_model.putFlag(point)
         m_game_view.reloadGrid()
     }
 
@@ -37,6 +47,13 @@ class GameBoardActivity : AppCompatActivity(),
 
         val typeToReturn = CellType()
         typeToReturn.Type = CellType.Type_t.CLOSED
+
+        val isFlagged = m_game_model.game?.flagged_cells?.contains(cell?.location) ?:
+            return typeToReturn
+        if(isFlagged) {
+            typeToReturn.Type = CellType.Type_t.FLAGGED
+            return typeToReturn
+        }
 
         val isOpened = m_game_model.game?.opened_cells?.contains(point)
         if(isOpened == null || !isOpened) {
