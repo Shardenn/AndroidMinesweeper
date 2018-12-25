@@ -18,28 +18,34 @@ data class Field(var size : Size) {
 
         for(bomb in bombs) {
             for(bomb_neighbour in getNeighbourCells(bomb)) {
-                val index = generator.indexForPoint(bomb_neighbour.location)
-                var currCell = cells[index]!!
-                if(currCell.type == Cell.Type.Bomb)
+                //val index = generator.indexForPoint(bomb_neighbour.location)
+                //var currCell = cells[index]!!
+                if(bomb_neighbour.type == Cell.Type.Bomb)
                     continue
 
-                if(currCell.type != Cell.Type.Label) {
-                    currCell.type = Cell.Type.Label
-                    currCell.labelValue = 0
+                if(bomb_neighbour.type != Cell.Type.Label) {
+                    bomb_neighbour.type = Cell.Type.Label
+                    bomb_neighbour.labelValue = 0
                 }
-                currCell.labelValue++
+                bomb_neighbour.labelValue++
             }
         }
     }
 
-    private fun getNeighbourCells(cell: Cell): MutableList<Cell> {
+    fun getNeighbourCells(cell: Cell): MutableList<Cell> {
         val neighbours = mutableListOf<Cell>()
 
         for(i in -1..1) {
             for(j in -1..1) {
-                val supposed_neighbour = Cell(
-                    Point(cell.location.x + i, cell.location.y + j))
-                if( !(0 until size.width).contains(supposed_neighbour.location.x) ||
+                val supposed_point = Point(cell.location.x + i, cell.location.y + j)
+                if(!(0 until size.width).contains(supposed_point.x) ||
+                    !(0 until size.width).contains(supposed_point.y))
+                    continue
+
+                val supposed_neighbour = cells[generator.indexForPoint(supposed_point)]
+
+                if( supposed_neighbour == null ||
+                    !(0 until size.width).contains(supposed_neighbour.location.x) ||
                     !(0 until size.height).contains(supposed_neighbour.location.y) ||
                     supposed_neighbour.location == cell.location)
                     continue

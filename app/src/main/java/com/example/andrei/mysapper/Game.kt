@@ -12,6 +12,15 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
 
     fun revealCellAt(point: Point) {
         opened_cells.add(point)
+
+        val curr_cell = field[point] ?: return
+        if(curr_cell.type == Cell.Type.Empty) {
+            val neighbours = field.getNeighbourCells(curr_cell)
+            for(neighbour in neighbours) {
+                if(!opened_cells.contains(neighbour.location))
+                    revealCellAt(neighbour.location)
+            }
+        }
     }
 
     fun putFlag(point: Point) {

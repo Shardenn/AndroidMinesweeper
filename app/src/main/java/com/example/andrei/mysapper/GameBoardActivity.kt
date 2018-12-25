@@ -25,6 +25,10 @@ class GameBoardActivity : AppCompatActivity(),
     }
 
     override fun onCellTapAt(point: Point) {
+        val isOpened = m_game_model.game?.opened_cells?.contains(point)
+        if(isOpened != null && isOpened)
+            return
+
         m_game_model.revealCellAt(point)
         m_game_view.reloadGrid()
     }
