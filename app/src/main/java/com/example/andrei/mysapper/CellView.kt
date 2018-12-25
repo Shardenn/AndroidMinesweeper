@@ -1,6 +1,7 @@
 package com.example.andrei.mysapper
 
 import android.content.Context
+import android.util.AttributeSet
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -17,8 +18,20 @@ class CellType {
     var labelValue = 0
 }
 
-class CellView(context: Context, var point: Point) : ImageButton(context) {
+class CellView : ImageButton {
 
+    constructor(context: Context, point: Point) : super(context) {
+        this.point = point
+    }
+
+    constructor(context: Context): super(context) {}
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {}
+    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr : Int) : super(context, attributeSet, defStyleAttr) {}
+    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
+            super(context, attributeSet, defStyleAttr, defStyleRes) {}
+
+
+    var point = Point(0,0)
     private var cellType: CellType.Type_t? = CellType.Type_t.CLOSED
 
     fun setType(newType: CellType?) {

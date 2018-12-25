@@ -44,26 +44,23 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="@+id/toolbar_bottom"
             app:layout_constraintTop_toTopOf="@+id/toolbar_bottom" app:layout_constraintBottom_toBottomOf="@+id/toolbar_bottom"/>
-    <TableLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/button_new_game" android:id="@+id/table_layout_cells"
-            android:background="@android:color/darker_gray" android:isScrollContainer="true"
-            android:gravity="fill"
-            android:scrollbarStyle="insideOverlay" android:scrollbars="horizontal|vertical"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-    </TableLayout>
     <android.support.v7.widget.Toolbar
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:theme="?attr/actionBarTheme"
             android:minHeight="?attr/actionBarSize"
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_upper"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+    <android.support.v7.widget.GridLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/grid_layout_cells"
+            app:layout_constraintBottom_toTopOf="@+id/toolbar_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_upper">
+
+    </android.support.v7.widget.GridLayout>
 </android.support.constraint.ConstraintLayout>

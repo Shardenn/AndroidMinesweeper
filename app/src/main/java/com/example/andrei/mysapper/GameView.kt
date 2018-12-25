@@ -3,7 +3,6 @@ package com.example.andrei.mysapper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TableRow
 import kotlinx.android.synthetic.main.activity_game_board.view.*
 
 interface GameView {
@@ -79,11 +78,8 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     private fun setupView() {
         val field_size = m_data_source?.size ?: return
 
+        m_root_view.grid_layout_cells.columnCount = field_size.width
         for(x in 0 until field_size.width) {
-
-            val tableRow = TableRow(m_root_view.context)
-            tableRow.id = x
-
             for(y in 0 until field_size.height) {
                 val cell = CellView(layoutInflater.context, Point(x,y))
                 m_grid.add(cell)
@@ -94,9 +90,9 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
 
                 cell.setOnClickListener {this.onClickCellAt(Point(x,y))}
                 cell.setOnLongClickListener { this.onLongClickCellAt(Point(x, y)) }
-                tableRow.addView(cell)
+
+                m_root_view.grid_layout_cells.addView(cell)
             }
-            m_root_view.table_layout_cells.addView(tableRow)
         }
     }
 }
