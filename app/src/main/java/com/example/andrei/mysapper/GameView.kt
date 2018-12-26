@@ -1,9 +1,14 @@
 package com.example.andrei.mysapper
 
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_game_board.view.*
+import kotlinx.android.synthetic.main.fragment_game_field.view.*
+import pl.polidea.view.ZoomView
 
 interface GameView {
 
@@ -78,7 +83,9 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     private fun setupView() {
         val field_size = m_data_source?.size ?: return
 
-        m_root_view.grid_layout_cells.columnCount = field_size.width
+        val game_field_view = layoutInflater.inflate(R.layout.fragment_game_field, null, false)
+        game_field_view.grid_layout_cells.columnCount = field_size.width
+
         for(x in 0 until field_size.width) {
             for(y in 0 until field_size.height) {
                 val cell = CellView(layoutInflater.context, Point(x,y))
@@ -91,8 +98,13 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
                 cell.setOnClickListener {this.onClickCellAt(Point(x,y))}
                 cell.setOnLongClickListener { this.onLongClickCellAt(Point(x, y)) }
 
-                m_root_view.grid_layout_cells.addView(cell)
+                game_field_view.grid_layout_cells.addView(cell)
             }
         }
+
+        val zoom_view = ZoomView(layoutInflater.context)
+        zoom_view.addView(game_field_view)
+
+        m_root_view.game_field_layout.addView(zoom_view)
     }
 }
