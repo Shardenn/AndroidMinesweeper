@@ -1,7 +1,11 @@
 package com.example.andrei.mysapper
 
 import android.content.Context
+import android.provider.Settings
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
+import android.util.DisplayMetrics
+import android.view.Display
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -45,11 +49,6 @@ class CellView : ImageButton {
             CellType.Type_t.LABEL -> setLabel(newType.labelValue)
             else -> setImageResource(android.R.color.black)
         }
-
-    }
-
-    fun updateLayoutParams() {
-        maxWidth = R.integer.maxCellSize
     }
 
     private fun setLabel(value: Int) {

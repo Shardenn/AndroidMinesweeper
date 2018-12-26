@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">MySapper</string>
     <string name="new_game">New Game</string>
+    <string name="apply_and_restart">Apply and restart</string>
     <string name="settings">Settings</string>
+    <string name="back">Undo and return</string>
+    <string name="begginer">Begginer</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="custom">Custom</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="bomb_count">Bomb count</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

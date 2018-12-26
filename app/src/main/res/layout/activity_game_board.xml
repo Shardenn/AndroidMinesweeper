@@ -57,17 +57,19 @@
     <Button
             android:text="@string/settings"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button"
+            android:layout_height="wrap_content" android:id="@+id/button_settings"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="@+id/toolbar_upper" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/game_field_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_upper"
             app:layout_constraintStart_toStartOf="@+id/toolbar_upper" android:layout_marginStart="8dp"/>
     <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_upper" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/toolbar_bottom" app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/game_field_layout">
+            android:id="@+id/game_field_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_upper"
+            app:layout_constraintBottom_toTopOf="@+id/button_new_game">
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

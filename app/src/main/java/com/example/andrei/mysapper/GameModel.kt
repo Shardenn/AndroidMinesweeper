@@ -4,7 +4,10 @@ class GameModel {
     data class Settings(var size: Size, var bombs_count : Int)
 
     val DebugSetting = Settings(Size(4,4), 2)
+
     val Begginer = Settings(Size(9,9), 10)
+    val Intermediate = Settings(Size(16,16), 40)
+    val Expert = Settings(Size(31,16), 99)
 
     var game : Game? = null
     var settings : Settings = DebugSetting

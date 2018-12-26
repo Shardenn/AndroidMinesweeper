@@ -1,5 +1,6 @@
 package com.example.andrei.mysapper
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
@@ -13,6 +14,11 @@ class GameBoardActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        m_game_model.settings.size.width = intent.getIntExtra("width", 6)
+        m_game_model.settings.size.height = intent.getIntExtra("height", 6)
+        m_game_model.settings.bombs_count =  intent.getIntExtra("bombs", 5)
+
         m_game_view = GameViewImpl(layoutInflater, this)
         m_game_view.setListener(this)
         setContentView(m_game_view.getRootView())
@@ -118,5 +124,19 @@ class GameBoardActivity : AppCompatActivity(),
         }
 
         return typeToReturn
+    }
+
+    override fun onSettingsTap() {
+        val intent = Intent(this, game_settings::class.java)
+        startActivity(intent)
+    }
+
+    override fun onUndoTap() {
+        val intent = Intent(this, GameBoardActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onApplyTap() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

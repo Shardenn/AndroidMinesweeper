@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_game_board.view.*
+import kotlinx.android.synthetic.main.activity_game_settings.view.*
 import kotlinx.android.synthetic.main.fragment_game_field.view.*
 import pl.polidea.view.ZoomView
 
@@ -25,6 +26,9 @@ interface GameView {
         fun onNewGameTap()
         fun onCellTapAt(point: Point)
         fun onCellLongTapAt(point: Point)
+        fun onSettingsTap()
+        fun onUndoTap()
+        fun onApplyTap()
     }
 
     interface GameViewDataSource {
@@ -45,12 +49,17 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
 
     var m_board_tap_listener: GameView.GameViewListener? = null
     private var m_root_view = layoutInflater.inflate(R.layout.activity_game_board, null)
+    private var m_settings_view = layoutInflater.inflate(R.layout.activity_game_settings, null)
 
     private var m_grid = mutableListOf<CellView>()
     private var m_red_button = CellView(layoutInflater.context, Point(-1,-1))
 
     init {
-        m_root_view.button_new_game.setOnClickListener {this.onClickNewGame()}
+        m_root_view.button_new_game.setOnClickListener {onClickNewGame()}
+        m_root_view.button_settings.setOnClickListener {onClickSettings()}
+
+        m_settings_view.button_back.setOnClickListener { onClickBack() }
+
         setupView()
         reloadGrid()
     }
@@ -65,8 +74,19 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
         m_data_source = dataSource
     }
 
+    fun onClickBack() {
+        m_board_tap_listener?.onUndoTap()
+    }
+
+    fun onClickApply () {
+        m_board_tap_listener?.onApplyTap()
+    }
+
+    fun onClickSettings() {
+        m_board_tap_listener?.onSettingsTap()
+    }
+
     fun onClickNewGame(){
-        Log.d("Sapper", "On click called in the GameViewImpl")
         m_board_tap_listener?.onNewGameTap()
     }
 
