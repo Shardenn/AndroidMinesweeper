@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_game_board.view.*
 import kotlinx.android.synthetic.main.fragment_game_field.view.*
 import pl.polidea.view.ZoomView
@@ -34,6 +35,7 @@ interface GameView {
     fun setListener(listener: GameViewListener)
     fun setDataSource(dataSource: GameViewDataSource)
     fun reloadGrid()
+    fun loseGame(bomb_clicked: Point)
 }
 
 class GameViewImpl(var layoutInflater: LayoutInflater,
@@ -72,6 +74,28 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     fun onLongClickCellAt(point: Point) : Boolean {
         m_board_tap_listener?.onCellLongTapAt(point)
         return true
+    }
+
+    override fun loseGame(bomb_clicked: Point) {
+        deactivateGrid()
+        showEndGameMessage()
+        setBombRed(bomb_clicked)
+    }
+
+    private fun deactivateGrid() {
+        for(button in m_grid) {
+            button.isEnabled = false
+        }
+    }
+
+    private fun showEndGameMessage() {
+        Toast.makeText(layoutInflater.context, "Game Over!", Toast.LENGTH_LONG).show()
+    }
+
+    private fun setBombRed(clicked_bomb: Point) {
+        val width = m_data_source?.size?.width ?: return
+        val index = width * clicked_bomb.x + clicked_bomb.y
+        m_grid[index].setBackgroundColor(layoutInflater.context.getColor(android.R.color.holo_red_light))
     }
 
     override fun reloadGrid() {

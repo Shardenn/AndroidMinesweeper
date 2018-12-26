@@ -9,14 +9,15 @@ class GameModel {
     var game : Game? = null
     var settings : Settings = DebugSetting
 
-    fun revealCellAt(point: Point) {
+    fun revealCellAt(point: Point): Cell.Type? {
         if(game == null) {
             if(settings.bombs_count >= settings.size.area())
                 settings.bombs_count = settings.size.area() - 1
             game = Game(settings.size, point, settings.bombs_count)
         }
 
-        game?.revealCellAt(point) // TODO
+        game?.revealCellAt(point)
+        return game?.field?.get(point)?.type
     }
 
     fun putFlag(point: Point) {
@@ -25,5 +26,9 @@ class GameModel {
 
     fun restart() {
         game = null
+    }
+
+    fun endGame() {
+        game?.openBombedCells()
     }
 }

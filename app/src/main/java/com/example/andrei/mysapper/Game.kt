@@ -27,6 +27,12 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
         flagged_cells.add(point)
     }
 
+    fun openBombedCells() {
+        for(bomb in field.getBombsLocations()) {
+            opened_cells.add(bomb)
+        }
+    }
+
     private fun generateBombsLocation() : MutableList<Point> {
         val temp_field = this.field.copy()
 

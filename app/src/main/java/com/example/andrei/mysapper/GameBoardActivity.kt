@@ -2,7 +2,6 @@ package com.example.andrei.mysapper
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 
 class GameBoardActivity : AppCompatActivity(),
     GameView.GameViewListener,
@@ -29,8 +28,14 @@ class GameBoardActivity : AppCompatActivity(),
         if(isOpened != null && isOpened)
             return
 
-        m_game_model.revealCellAt(point)
+        val revealed_type = m_game_model.revealCellAt(point)
         m_game_view.reloadGrid()
+
+        if(revealed_type == Cell.Type.Bomb) {
+            m_game_model.endGame()
+            m_game_view.reloadGrid()
+            m_game_view.loseGame(point)
+        }
     }
 
     override fun onCellLongTapAt(point: Point) {

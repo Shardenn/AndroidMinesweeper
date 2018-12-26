@@ -32,6 +32,18 @@ data class Field(var size : Size) {
         }
     }
 
+    fun getBombsLocations() : MutableList<Point> {
+        val bombs = mutableListOf<Point>()
+
+        for(cell in cells) {
+            if(cell?.type == Cell.Type.Bomb) {
+                bombs.add(cell.location)
+            }
+        }
+
+        return bombs
+    }
+
     fun getNeighbourCells(cell: Cell): MutableList<Cell> {
         val neighbours = mutableListOf<Cell>()
 
