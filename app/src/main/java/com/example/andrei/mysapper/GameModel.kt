@@ -3,7 +3,7 @@ package com.example.andrei.mysapper
 class GameModel {
     data class Settings(var size: Size, var bombs_count : Int)
 
-    val DebugSetting = Settings(Size(6,6), 5)
+    val DebugSetting = Settings(Size(4,4), 2)
     val Begginer = Settings(Size(9,9), 10)
 
     var game : Game? = null
@@ -22,6 +22,10 @@ class GameModel {
 
     fun putFlag(point: Point) {
         game?.putFlag(point)
+    }
+
+    fun removeFlag(point: Point) {
+        game?.removeFlag(point)
     }
 
     fun restart() {

@@ -20,12 +20,15 @@ class GameBoardActivity : AppCompatActivity(),
 
     override fun onNewGameTap(){
         m_game_model.restart()
-        m_game_view.reloadGrid()
+        m_game_view.restart()
     }
 
     override fun onCellTapAt(point: Point) {
         val isOpened = m_game_model.game?.opened_cells?.contains(point)
         if(isOpened != null && isOpened)
+            return
+        val isFlagged = m_game_model.game?.flagged_cells?.contains(point)
+        if(isFlagged != null && isFlagged)
             return
 
         val revealed_type = m_game_model.revealCellAt(point)
@@ -35,6 +38,10 @@ class GameBoardActivity : AppCompatActivity(),
             m_game_model.endGame()
             m_game_view.reloadGrid()
             m_game_view.loseGame(point)
+        }
+
+        if(checkOnWin()) {
+            m_game_view.winGame()
         }
     }
 
@@ -46,8 +53,37 @@ class GameBoardActivity : AppCompatActivity(),
         val isOpened = m_game_model.game?.opened_cells?.contains(point) ?: return
         if(isOpened)
             return
-        m_game_model.putFlag(point)
+
+        val isFlagged = m_game_model.game?.flagged_cells?.contains(point) ?: return
+        if(!isFlagged)
+            m_game_model.putFlag(point)
+        else
+            m_game_model.removeFlag(point)
+
         m_game_view.reloadGrid()
+
+        if(checkOnWin()) {
+            m_game_view.winGame()
+        }
+    }
+
+    fun checkOnWin(): Boolean {
+        val bombs = m_game_model.game?.field?.getBombsLocations() ?: return false
+        for(bomb in bombs) {
+            val isFlagged = m_game_model.game?.flagged_cells?.contains(bomb) ?: return false
+            if(!isFlagged)
+                return false
+        }
+
+        val game_size = m_game_model.game?.field?.size ?: return false
+        for(x in 0 until game_size.width)
+            for(y in 0 until game_size.height) {
+                val isOpened = m_game_model.game?.opened_cells?.contains(Point(x,y)) ?: return false
+                if(!bombs.contains(Point(x,y)) && !isOpened)
+                    return false
+            }
+
+        return true
     }
 
     override fun cellTypeAtCoord(point: Point): CellType {

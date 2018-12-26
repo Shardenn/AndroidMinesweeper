@@ -27,6 +27,10 @@ data class Game(var size: Size, var initial_location : Point, var bomb_count : I
         flagged_cells.add(point)
     }
 
+    fun removeFlag(point: Point) {
+        flagged_cells.remove(point)
+    }
+
     fun openBombedCells() {
         for(bomb in field.getBombsLocations()) {
             opened_cells.add(bomb)

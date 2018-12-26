@@ -36,6 +36,8 @@ interface GameView {
     fun setDataSource(dataSource: GameViewDataSource)
     fun reloadGrid()
     fun loseGame(bomb_clicked: Point)
+    fun winGame()
+    fun restart()
 }
 
 class GameViewImpl(var layoutInflater: LayoutInflater,
@@ -45,6 +47,7 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
     private var m_root_view = layoutInflater.inflate(R.layout.activity_game_board, null)
 
     private var m_grid = mutableListOf<CellView>()
+    private var m_red_button = CellView(layoutInflater.context, Point(-1,-1))
 
     init {
         m_root_view.button_new_game.setOnClickListener {this.onClickNewGame()}
@@ -76,10 +79,28 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
         return true
     }
 
+    override fun restart() {
+        //m_red_button.background = layoutInflater.context.getDrawable(android.R.color.transparent)
+        //m_red_button = CellView(layoutInflater.context, Point(-1,-1))
+        activateGrid()
+        reloadGrid()
+    }
+
+    override fun winGame() {
+        deactivateGrid()
+        showToastMessage("You Win!")
+    }
+
     override fun loseGame(bomb_clicked: Point) {
         deactivateGrid()
-        showEndGameMessage()
+        showToastMessage("Game Over!")
         setBombRed(bomb_clicked)
+    }
+
+    private fun activateGrid() {
+        for(button in m_grid) {
+            button.isEnabled = true
+        }
     }
 
     private fun deactivateGrid() {
@@ -88,14 +109,15 @@ class GameViewImpl(var layoutInflater: LayoutInflater,
         }
     }
 
-    private fun showEndGameMessage() {
-        Toast.makeText(layoutInflater.context, "Game Over!", Toast.LENGTH_LONG).show()
+    private fun showToastMessage(text: CharSequence) {
+        Toast.makeText(layoutInflater.context, text, Toast.LENGTH_LONG).show()
     }
 
     private fun setBombRed(clicked_bomb: Point) {
         val width = m_data_source?.size?.width ?: return
         val index = width * clicked_bomb.x + clicked_bomb.y
-        m_grid[index].setBackgroundColor(layoutInflater.context.getColor(android.R.color.holo_red_light))
+        //m_red_button = m_grid[index]
+        //m_red_button.background = layoutInflater.context.getDrawable(android.R.color.holo_red_light)
     }
 
     override fun reloadGrid() {
